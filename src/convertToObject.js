@@ -9,7 +9,7 @@ function convertToObject(sourceString) {
   const commands = sourceString.split(';');
   const commandsAndValues = commands.map((command) => command.split(':'));
   const mergedCommandsAndValues = commandsAndValues.reduce(
-    (allValues, array) => [...allValues, ...array],
+    (allCommands, command) => [...allCommands, ...command],
     []
   );
   const trimmedCommandsAndValues = mergedCommandsAndValues.map((command) =>
@@ -19,17 +19,20 @@ function convertToObject(sourceString) {
     (command) => command.length > 0
   );
 
-  const result = validCommandsAndValues.reduce((styleObject, word, index) => {
-    if (index % 2 === 0) {
-      styleObject[word] = undefined;
-    } else {
-      styleObject[validCommandsAndValues[index - 1]] = word;
-    }
+  const styleBlockOfCode = validCommandsAndValues.reduce(
+    (styleBlock, word, index) => {
+      if (index % 2 === 0) {
+        styleBlock[word] = undefined;
+      } else {
+        styleBlock[validCommandsAndValues[index - 1]] = word;
+      }
 
-    return styleObject;
-  }, {});
+      return styleBlock;
+    },
+    {}
+  );
 
-  return result;
+  return styleBlockOfCode;
 }
 
 module.exports = convertToObject;

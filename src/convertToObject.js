@@ -18,7 +18,6 @@ function convertToObject(sourceString) {
   const validCommandsAndValues = trimmedCommandsAndValues.filter(
     (command) => command.length > 0
   );
-
   const styleBlockOfCode = validCommandsAndValues.reduce(
     (styleBlock, word, index) => {
       if (index % 2 === 0) {

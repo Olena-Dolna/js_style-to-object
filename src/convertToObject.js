@@ -18,11 +18,16 @@ function convertToObject(sourceString) {
   const validCommandsAndValues = trimmedCommandsAndValues.filter(
     (command) => command.length > 0
   );
-  const result = {};
 
-  for (let i = 0; i < validCommandsAndValues.length - 1; i += 2) {
-    result[validCommandsAndValues[i]] = validCommandsAndValues[i + 1];
-  }
+  const result = validCommandsAndValues.reduce((styleObject, word, index) => {
+    if (index % 2 === 0) {
+      styleObject[word] = undefined;
+    } else {
+      styleObject[validCommandsAndValues[index - 1]] = word;
+    }
+
+    return styleObject;
+  }, {});
 
   return result;
 }

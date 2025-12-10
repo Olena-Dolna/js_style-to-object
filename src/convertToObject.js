@@ -6,32 +6,16 @@
  * @return {object}
  */
 function convertToObject(sourceString) {
-  const commands = sourceString.split(';');
-  const commandsAndValues = commands.map((command) => command.split(':'));
-  const mergedCommandsAndValues = commandsAndValues.reduce(
-    (allCommands, command) => [...allCommands, ...command],
-    []
-  );
-  const trimmedCommandsAndValues = mergedCommandsAndValues.map((command) =>
-    command.trim()
-  );
-  const validCommandsAndValues = trimmedCommandsAndValues.filter(
-    (command) => command.length > 0
-  );
-  const styleBlockOfCode = validCommandsAndValues.reduce(
-    (styleBlock, word, index) => {
-      if (index % 2 === 0) {
-        styleBlock[word] = undefined;
-      } else {
-        styleBlock[validCommandsAndValues[index - 1]] = word;
+  const commands = sourceString
+    .split(';').reduce((commandBlock, command) => {
+      const commandParts = command.split(':');
+      if (commandParts.length === 2) {
+        commandBlock[commandParts[0].trim()] = commandParts[1].trim();
       }
 
-      return styleBlock;
-    },
-    {}
-  );
-
-  return styleBlockOfCode;
+      return commandBlock;
+    }, {})
+  return commands;
 }
 
 module.exports = convertToObject;
